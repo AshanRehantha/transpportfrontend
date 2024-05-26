@@ -47,7 +47,7 @@ function EditVehicles() {
   
   useEffect(() => {
     if (vehicleId) {
-      axios.post("http://localhost:8081/vehicles/vehicleDetails/viewVehicles", { id: vehicleId })
+      axios.post("http://16.16.167.16:8081/vehicles/vehicleDetails/viewVehicles", { id: vehicleId })
         .then((res) => {
           if (res.data.success) {
             const fetchedData = res.data.vehicle || {};
@@ -193,7 +193,7 @@ function EditVehicles() {
 
     //formData.append('registrationDate', updatedRegistrationDate ? updatedRegistrationDate.toISOString().split('T')[0] : '');
     
-    axios.post(`http://localhost:8081/vehicles/vehicleDetails/editVehicles/${vehicleId}`, formData)
+    axios.post(`http://16.16.167.16:8081/vehicles/vehicleDetails/editVehicles/${vehicleId}`, formData)
       .then((res) => {
         console.log('Response from editVehicles:', res.data);
         if (res.data.success) {
@@ -221,14 +221,14 @@ function EditVehicles() {
           if (fileExtension === "pdf") {
             return (
               <div key={index}>
-                <a href={`http://localhost:8081/image/${type}/${file}`} target="_blank" rel="noopener noreferrer">View PDF {index + 1}</a>
+                <a href={`http://16.16.167.16:8081/image/${type}/${file}`} target="_blank" rel="noopener noreferrer">View PDF {index + 1}</a>
                 <button className="button-remove" onClick={() => handleRemoveFile(type, index)}>Remove</button>
               </div>
             );
           } else {
             return (
               <div key={index}>
-                <img src={`http://localhost:8081/image/${type}/${file}`} alt={`${type} ${index + 1}`} style={{ width: "500px", height: "500px" }} />
+                <img src={`http://16.16.167.16:8081/image/${type}/${file}`} alt={`${type} ${index + 1}`} style={{ width: "500px", height: "500px" }} />
                 <button className="button-remove" onClick={() => handleRemoveFile(type, index)}>Remove</button>
               </div>
             );
@@ -251,7 +251,7 @@ function EditVehicles() {
   //       return (
   //         <div>
   //         <a
-  //           href={`http://localhost:8081/image/registrationImage/${vehicleData[registrationImage]}`}
+  //           href={`http://16.16.167.16:8081/image/registrationImage/${vehicleData[registrationImage]}`}
   //           target="_blank"
   //           rel="noopener noreferrer"
   //         >
@@ -263,7 +263,7 @@ function EditVehicles() {
   //       return (
   //         <div>
   //         <img
-  //           src={`http://localhost:8081/image/registrationImage/${vehicleData[registrationImage]}`}
+  //           src={`http://16.16.167.16:8081/image/registrationImage/${vehicleData[registrationImage]}`}
   //           alt={registrationImage}
   //           style={{ width: "500px", height: "500px" }}
   //         />

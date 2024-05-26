@@ -13,7 +13,7 @@ function DeleteVehicles() {
     useEffect(() => {
       const fetchDeletedVehicleDetails = async () => {
           try {
-              const response = await axios.post("http://localhost:8081/vehicles/vehicleDetails/deletedVehicles");
+              const response = await axios.post("http://16.16.167.16:8081/vehicles/vehicleDetails/deletedVehicles");
               console.log("Server Response:", response.data);
               if (response.data.loginStatus) {
                   setDeletedVehicleDetails(response.data.deletedVehicles || []);
@@ -37,7 +37,7 @@ function DeleteVehicles() {
     
         console.log("Undoing delete for vehicle:", deleteVehicle.id);
     
-        const response = await axios.post("http://localhost:8081/vehicles/vehicleDetails/undoDelete", { id: deleteVehicle.id }, { headers: { 'Content-Type': 'application/json' }});
+        const response = await axios.post("http://16.16.167.16:8081/vehicles/vehicleDetails/undoDelete", { id: deleteVehicle.id }, { headers: { 'Content-Type': 'application/json' }});
     
         console.log("Server response:", response.data);
     

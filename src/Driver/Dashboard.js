@@ -13,7 +13,7 @@ function Dashboard() {
     axios.defaults.withCredentials = true;
     useEffect(() => {
 
-        axios.post('http://localhost:8081/driver/dashboard')
+        axios.post('http://16.16.167.16:8081/driver/dashboard')
         .then(res =>{
             if(res.data.Status === "Success"){
                 setAuth(true);

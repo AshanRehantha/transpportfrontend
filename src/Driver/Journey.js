@@ -55,7 +55,7 @@ function Journey() {
 
     useEffect(() => {
         // Axios request to fetch data
-        axios.post('http://localhost:8081/driver/dashboard/journey')
+        axios.post('http://16.16.167.16:8081/driver/dashboard/journey')
         .then(response => {
             console.log("DropDown Added Successfully", response);
             setTripStatus(response.data.tripStatus);
@@ -65,7 +65,7 @@ function Journey() {
         });
     
         // Fetch request to fetch data (optional, as you can choose either Axios or Fetch)
-        fetch('http://localhost:8081/driver/dashboard/journey/dropdown', {
+        fetch('http://16.16.167.16:8081/driver/dashboard/journey/dropdown', {
             method: 'POST',
             credentials: 'include',
         })
@@ -85,7 +85,7 @@ function Journey() {
                 console.error('Error fetching data:', error);
             });
 
-            axios.get(`http://localhost:8081/driver/dashboard/latest-start-trip/${username}`)
+            axios.get(`http://16.16.167.16:8081/driver/dashboard/latest-start-trip/${username}`)
             .then(response => {
                 const data = response.data.LatestStartDetails; 
                 if (data) {
@@ -158,7 +158,7 @@ function Journey() {
             };
             
             console.log("Values:", TripData);
-            axios.post('http://localhost:8081/driver/dashboard/journey', TripData)
+            axios.post('http://16.16.167.16:8081/driver/dashboard/journey', TripData)
             .then(response => {
                 if (response.data.success) {
                     alert(`Trip ${selectedOption.toLowerCase()}ed successfully`);

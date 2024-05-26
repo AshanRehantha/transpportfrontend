@@ -69,7 +69,7 @@ function AddVehicleForm({ isOpen, onClose, addVehicle, vehicleId}) {
         }
       }
     
-      axios.post('http://localhost:8081/vehicles/vehicleDetails/add-vehicle', formData,{
+      axios.post('http://16.16.167.16:8081/vehicles/vehicleDetails/add-vehicle', formData,{
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -239,7 +239,7 @@ function VehicleDetails(){
     
     useEffect(() => {
       console.log(vehicles);
-        axios.post('http://localhost:8081/vehicles/vehicleDetails', {})
+        axios.post('http://16.16.167.16:8081/vehicles/vehicleDetails', {})
         .then(res => {
             if (res.data.success) {
                 console.log("Sucessfully", res.data.vehicles);
@@ -272,7 +272,7 @@ function VehicleDetails(){
 
   const deletevehicle = (deleteVehicle) => {
     console.log('Deleting vehicle:', deleteVehicle);
-      axios.post('http://localhost:8081/vehicles/vehicleDetails/delete-vehicle', deleteVehicle)
+      axios.post('http://16.16.167.16:8081/vehicles/vehicleDetails/delete-vehicle', deleteVehicle)
       .then((response) => {
         console.log('Server response:', response.data);
         if (response.data.loginStatus) {

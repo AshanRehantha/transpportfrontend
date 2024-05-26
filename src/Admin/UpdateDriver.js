@@ -34,7 +34,7 @@ function UpdateDriver() {
   };
 
     useEffect(() => {
-      axios.post('http://localhost:8081/admin/home/register/driver/updateDriver/dropdown')
+      axios.post('http://16.16.167.16:8081/admin/home/register/driver/updateDriver/dropdown')
         .then((response) => {
             if (response.data.success) {
                 setUserNameList(response.data.drivers);
@@ -50,7 +50,7 @@ function UpdateDriver() {
 
       useEffect(() => {
         if (!selectedUserName) return;
-        axios.post("http://localhost:8081/admin/home/register/driver/updateDriver", { username: selectedUserName })
+        axios.post("http://16.16.167.16:8081/admin/home/register/driver/updateDriver", { username: selectedUserName })
           .then((res) => {
             if (res.data.success) {
               const fetchedData = res.data.driver || {};
@@ -113,7 +113,7 @@ function UpdateDriver() {
   
       //formData.append('registrationDate', updatedRegistrationDate ? updatedRegistrationDate.toISOString().split('T')[0] : '');
       
-      axios.post(`http://localhost:8081/admin/home/register/driver/updateDriver/editDriverRecords/${selectedUserName}`, formData)
+      axios.post(`http://16.16.167.16:8081/admin/home/register/driver/updateDriver/editDriverRecords/${selectedUserName}`, formData)
         .then((res) => {
           console.log('Response from edit Driver:', res.data);
           if (res.data.success) {
@@ -147,14 +147,14 @@ function UpdateDriver() {
             if (fileExtension === "pdf") {
               return (
               <div key={index}>
-              <a href={`http://localhost:8081/image/drivingLicense/${license}`} target="_blank" rel="noopener noreferrer">View PDF {index + 1}</a>
+              <a href={`http://16.16.167.16:8081/image/drivingLicense/${license}`} target="_blank" rel="noopener noreferrer">View PDF {index + 1}</a>
               <button className="button-remove" onClick={() => handleRemoveDrivingLicense(index)}>Remove</button>
             </div>
             );
           } else {
             return (
             <div key={index}>
-              <img src={`http://localhost:8081/image/drivingLicense/${license}`} alt="Driving License" style={{ width: "500px", height: "500px" }} />
+              <img src={`http://16.16.167.16:8081/image/drivingLicense/${license}`} alt="Driving License" style={{ width: "500px", height: "500px" }} />
               <button className="button-remove" onClick={() => handleRemoveDrivingLicense(index)}>Remove</button>
             </div>
            );

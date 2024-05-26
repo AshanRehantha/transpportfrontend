@@ -49,7 +49,7 @@ const handleImageChange = (e) => {
 
     useEffect(() => {
         // Axios request to fetch data
-        axios.post('http://localhost:8081/vehicles/vehicleDetails/dropdown')
+        axios.post('http://16.16.167.16:8081/vehicles/vehicleDetails/dropdown')
         .then((response) => {
             if (response.data.success) {
                 setVehicle(response.data.vehicleno);
@@ -75,7 +75,7 @@ const handleImageChange = (e) => {
         }
       }
   
-      axios.post('http://localhost:8081/vehicles/historyDetails/vehicleMaintenance', formData, {
+      axios.post('http://16.16.167.16:8081/vehicles/historyDetails/vehicleMaintenance', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

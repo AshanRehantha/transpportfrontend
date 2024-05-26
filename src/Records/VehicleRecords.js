@@ -46,7 +46,7 @@ function VehicleRecords() {
 
     useEffect(() => {
         // Axios request to fetch data
-        axios.post('http://localhost:8081/vehicles/vehicleDetails/dropdown')
+        axios.post('http://16.16.167.16:8081/vehicles/vehicleDetails/dropdown')
         .then((response) => {
             if (response.data.success) {
                 setVehicle(response.data.vehicleno);
@@ -55,7 +55,7 @@ function VehicleRecords() {
         .catch(err => {
             console.log("Error Add DropDown Details", err);
         });
-        axios.post('http://localhost:8081/records/vehicleRecords', { vehicleno: selectedVehicle})
+        axios.post('http://16.16.167.16:8081/records/vehicleRecords', { vehicleno: selectedVehicle})
         .then(res => {
             console.log("Vehicle Records Response:", res.data);
             if (res.data.success) {

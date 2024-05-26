@@ -13,7 +13,7 @@ function AdminHome() {
     axios.defaults.withCredentials = true;
     useEffect(() => {
 
-        axios.post('http://localhost:8081/admin/home')
+        axios.post('http://16.16.167.16:8081/admin/home')
         .then(res =>{
             if(res.data.Status === "Success"){
                 setAuth(true);
@@ -26,7 +26,7 @@ function AdminHome() {
         .then(err => console.log(err))
     }, [])
     // const handleLogout = () => {
-    //         axios.get('http://localhost:8081/logout')
+    //         axios.get('http://16.16.167.16:8081/logout')
     //         .then(res => {
     //             if(res.data.Status === "Success"){
     //                 Navigate('/')

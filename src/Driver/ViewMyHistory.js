@@ -42,7 +42,7 @@ function ViewMyHistory(){
         // Only proceed if username is defined
         if (username) {
             // Axios POST request with startDate and endDate in the request body
-            axios.post(`http://localhost:8081/driver/dashboard/viewMyHistory`,{drivername: username , startDate: startDate, endDate: endDate})
+            axios.post(`http://16.16.167.16:8081/driver/dashboard/viewMyHistory`,{drivername: username , startDate: startDate, endDate: endDate})
             .then(res => {
                 if (res.data.success) {
                     console.log("Successfully fetched trips", res.data.trips);

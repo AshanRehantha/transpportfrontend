@@ -28,7 +28,7 @@ function AddDocumentForm({ isOpen, onClose, Id}) {
 
     useEffect(() => {
         // Axios request to fetch data
-        axios.post('http://localhost:8081/vehicles/vehicleDetails/dropdown')
+        axios.post('http://16.16.167.16:8081/vehicles/vehicleDetails/dropdown')
         .then((response) => {
             if (response.data.success) {
                 setVehicle(response.data.vehicleno);
@@ -61,7 +61,7 @@ function AddDocumentForm({ isOpen, onClose, Id}) {
           receivedDate: formattedDate1,
         };
 
-      axios.post('http://localhost:8081/vehicles/vehicleSecurity/originalDocumentsSubmit', newDocument)
+      axios.post('http://16.16.167.16:8081/vehicles/vehicleSecurity/originalDocumentsSubmit', newDocument)
           .then(response => {
               if (response.data.success) {
                 console.log('Documents Details uploaded successfully');
@@ -338,7 +338,7 @@ function OriginalDocumentsRecords() {
 
     useEffect(() => {
         // Axios request to fetch data
-        axios.post('http://localhost:8081/vehicles/vehicleDetails/dropdown')
+        axios.post('http://16.16.167.16:8081/vehicles/vehicleDetails/dropdown')
         .then((response) => {
             if (response.data.success) {
                 setVehicle(response.data.vehicleno);
@@ -347,7 +347,7 @@ function OriginalDocumentsRecords() {
         .catch(err => {
             console.log("Error Add DropDown Details", err);
         });
-        axios.post('http://localhost:8081/vehicles/vehicleSecurity/originalDocumentsRecords', { vehicleno: selectedVehicle})
+        axios.post('http://16.16.167.16:8081/vehicles/vehicleSecurity/originalDocumentsRecords', { vehicleno: selectedVehicle})
         .then(res => {
             console.log("Vehicle Records Response:", res.data);
             if (res.data.success) {
@@ -387,7 +387,7 @@ function OriginalDocumentsRecords() {
         const formattedReceivedDate = receivedDate ? format(receivedDate, 'yyyy-MM-dd') : '';
 
         try {
-            const response = axios.post('http://localhost:8081/vehicles/vehicleSecurity/editOriginalDocumentsRecords', {vehicleno, documentName, reason, 
+            const response = axios.post('http://16.16.167.16:8081/vehicles/vehicleSecurity/editOriginalDocumentsRecords', {vehicleno, documentName, reason, 
             issuedDate: formattedIssuedDate, 
             issuedBy, issuedTo, 
             receivedDate: formattedReceivedDate

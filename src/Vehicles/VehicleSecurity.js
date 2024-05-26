@@ -26,7 +26,7 @@ function VehicleSecurity() {
         // Clear the text field value if a different option is selected
         if (value && value !== 'other') {
           try {
-              const response = await axios.post('http://localhost:8081/vehicles/vehicleDetails/viewTaxPayer', { vehicleno: value });
+              const response = await axios.post('http://16.16.167.16:8081/vehicles/vehicleDetails/viewTaxPayer', { vehicleno: value });
               if (response.data.success) {
                   setTaxPayer(response.data.vehicle.taxPayer ? "Yes" : "No");
               } else {
@@ -42,7 +42,7 @@ function VehicleSecurity() {
 
     useEffect(() => {
         // Axios request to fetch data
-        axios.post('http://localhost:8081/vehicles/vehicleDetails/dropdown')
+        axios.post('http://16.16.167.16:8081/vehicles/vehicleDetails/dropdown')
         .then((response) => {
             if (response.data.success) {
                 setVehicle(response.data.vehicleno);
@@ -69,7 +69,7 @@ function VehicleSecurity() {
         key: securities.key
       };
   
-      axios.post('http://localhost:8081/vehicles/vehicleSecurity', vehicleData)
+      axios.post('http://16.16.167.16:8081/vehicles/vehicleSecurity', vehicleData)
           .then(response => {
               if (response.data.loginStatus) {
                   alert('Vehicle Security Details Added Successfully');

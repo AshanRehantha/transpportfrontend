@@ -24,7 +24,7 @@ function FuelUsage() {
         setSelectedVehicle(value);
         if (value) {
             try {
-                const response = await axios.post('http://localhost:8081/vehicles/historyDetails/viewFuelType', { vehicleno: value });
+                const response = await axios.post('http://16.16.167.16:8081/vehicles/historyDetails/viewFuelType', { vehicleno: value });
                 setFuelType(response.data.success && response.data.fuel ? response.data.fuel.fuelType : '');
             } catch (error) {
                 console.error('Error fetching fuel type:', error);
@@ -37,7 +37,7 @@ function FuelUsage() {
 
     useEffect(() => {
         // Axios request to fetch data
-        axios.post('http://localhost:8081/vehicles/vehicleDetails/dropdown')
+        axios.post('http://16.16.167.16:8081/vehicles/vehicleDetails/dropdown')
         .then((response) => {
             if (response.data.success) {
                 setVehicle(response.data.vehicleno);
@@ -65,7 +65,7 @@ function FuelUsage() {
           cost: parseFloat(cost)
         };
     
-        axios.post('http://localhost:8081/vehicles/historyDetails/fuelUsage', vehicleData)
+        axios.post('http://16.16.167.16:8081/vehicles/historyDetails/fuelUsage', vehicleData)
         .then(response => {
             if (response.data.loginStatus) {
                 alert('Fuel Details Added Successfully');

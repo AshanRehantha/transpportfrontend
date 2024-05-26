@@ -122,7 +122,7 @@ function UserLogin(){
         setErrors(validationErrors);
         if(!validationErrors.username && !validationErrors.password){
             try{
-                const response = await axios.post('http://localhost:8081/driver', values);
+                const response = await axios.post('http://16.16.167.16:8081/driver', values);
                 console.log('Response:', response.data);
                 if(response.data.loginStatus1 === true){
                     console.log('Login Success');
@@ -135,7 +135,7 @@ function UserLogin(){
             catch(err) {
                 console.log('Error:', err);
             } 
-            // axios.post('http://localhost:8081/admin', details)
+            // axios.post('http://16.16.167.16:8081/admin', details)
             // //Navigate('/admin/home');
             // .then(res => {
             //     Navigate.push('/admin/home')
@@ -161,7 +161,7 @@ function UserLogin(){
     const handlePasswordChangeSubmit = async ({ username, currentPassword, newPassword, confirmPassword }) => {
 
         try {
-            const response = await axios.post('http://localhost:8081/driver/reset-password', { username, currentPassword, newPassword, confirmPassword });
+            const response = await axios.post('http://16.16.167.16:8081/driver/reset-password', { username, currentPassword, newPassword, confirmPassword });
             console.log(response.data);
             alert ('Password updated successfully')
         } catch (error) {

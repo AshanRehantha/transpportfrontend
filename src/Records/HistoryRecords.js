@@ -9,7 +9,7 @@ function HistoryRecords (){
     axios.defaults.withCredentials = true;
     useEffect(() => {
 
-        axios.post('http://localhost:8081/historyRecords')
+        axios.post('http://16.16.167.16:8081/historyRecords')
         .then(res =>{
             console.log(res);
         })

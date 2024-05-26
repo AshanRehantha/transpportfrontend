@@ -26,7 +26,7 @@ function UserHome() {
 
     useEffect(() => {
 
-        axios.post('http://localhost:8081/user/home')
+        axios.post('http://16.16.167.16:8081/user/home')
         .then(res =>{
             if(res.data.Status === "Success"){
                 setAuth(true);
@@ -38,7 +38,7 @@ function UserHome() {
         })
         .then(err => console.log(err))
 
-            axios.get(`http://localhost:8081/user/home/latest-start-trip/${username}`)
+            axios.get(`http://16.16.167.16:8081/user/home/latest-start-trip/${username}`)
             .then(response => {
                 if (response.data.LatestStartDetails) {
                     setStartTripDetails(response.data.LatestStartDetails);
@@ -59,7 +59,7 @@ function UserHome() {
     const isChecked = (value) => value === selectedOption;
 
     // const handleLogout = () => {
-    //         axios.get('http://localhost:8081/logout')
+    //         axios.get('http://16.16.167.16:8081/logout')
     //         .then(res => {
     //             if(res.data.Status === "Success"){
     //                 Navigate('/')
@@ -108,7 +108,7 @@ function UserHome() {
         };
         console.log("Values:", tripData);
 
-        axios.post('http://localhost:8081/user/home/trips', tripData)
+        axios.post('http://16.16.167.16:8081/user/home/trips', tripData)
             .then(response => {
                 if (response.data.loginStatus2) {
                         alert(`Trip ${selectedOption.toLowerCase()}ed successfully`);

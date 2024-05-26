@@ -25,7 +25,7 @@ function ViewVehicles() {
 
   useEffect(() => {
     if (vehicleId) {
-      axios.post("http://localhost:8081/vehicles/vehicleDetails/viewVehicles", {id: vehicleId, types: ['license', 'registrationImage', 'insuranceCard', 'taxReceipts']})
+      axios.post("http://16.16.167.16:8081/vehicles/vehicleDetails/viewVehicles", {id: vehicleId, types: ['license', 'registrationImage', 'insuranceCard', 'taxReceipts']})
         .then((res) => {
           console.log("Entire server response:", res);
           if (res.data.success) {
@@ -77,7 +77,7 @@ function ViewVehicles() {
   const renderLicense = () => {
     if (license.length > 0) {
       return license.map((licenseUrl, index) => {
-        const imageUrl = `http://localhost:8081/image/license/${licenseUrl}`;
+        const imageUrl = `http://16.16.167.16:8081/image/license/${licenseUrl}`;
         const fileExtension = licenseUrl.split(".").pop().toLowerCase();
   
         if (fileExtension === "pdf") {
@@ -119,7 +119,7 @@ function ViewVehicles() {
 
       if (registrationImage.length > 0) {
         return registrationImage.map((registrationUrl, index) => {
-          const imageUrl = `http://localhost:8081/image/registrationImage/${registrationUrl}`;
+          const imageUrl = `http://16.16.167.16:8081/image/registrationImage/${registrationUrl}`;
           const fileExtension = registrationUrl.split(".").pop().toLowerCase();
     
         if (fileExtension === "pdf") {
@@ -160,7 +160,7 @@ function ViewVehicles() {
   const renderInsurance = () => {
     if (insuranceCard.length > 0) {
       return insuranceCard.map((insuranceCardUrl, index) => {
-        const imageUrl = `http://localhost:8081/image/insuranceCard/${insuranceCardUrl}`;
+        const imageUrl = `http://16.16.167.16:8081/image/insuranceCard/${insuranceCardUrl}`;
         const fileExtension = insuranceCardUrl.split(".").pop().toLowerCase();
   
         if (fileExtension === "pdf") {
@@ -201,7 +201,7 @@ function ViewVehicles() {
   const renderTax = () => {
     if (taxReceipts.length > 0) {
       return taxReceipts.map((taxUrl, index) => {
-        const imageUrl = `http://localhost:8081/image/taxReceipts/${taxUrl}`;
+        const imageUrl = `http://16.16.167.16:8081/image/taxReceipts/${taxUrl}`;
         const fileExtension = taxUrl.split(".").pop().toLowerCase();
   
         if (fileExtension === "pdf") {

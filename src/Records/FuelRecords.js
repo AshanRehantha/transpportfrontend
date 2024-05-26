@@ -43,7 +43,7 @@ function FuelRecords() {
 
     useEffect(() => {
         // Axios request to fetch data
-        axios.post('http://localhost:8081/vehicles/vehicleDetails/dropdown')
+        axios.post('http://16.16.167.16:8081/vehicles/vehicleDetails/dropdown')
         .then((response) => {
             if (response.data.success) {
                 setVehicle(response.data.vehicleno);
@@ -53,7 +53,7 @@ function FuelRecords() {
             console.log("Error Add DropDown Details", err);
         });
 
-        axios.post('http://localhost:8081/records/fuelRecords', { vehicleno: selectedVehicle , startDate: startDate, endDate: endDate})
+        axios.post('http://16.16.167.16:8081/records/fuelRecords', { vehicleno: selectedVehicle , startDate: startDate, endDate: endDate})
         .then(res => {
             if (res.data.success) {
                 console.log("Successfully", res.data.fuel);

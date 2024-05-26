@@ -43,7 +43,7 @@ function AttendanceRecords() {
 
     useEffect(() => {
         // Axios request to fetch data
-        axios.post('http://localhost:8081/admin/home/register/driver/updateDriver/dropdown')
+        axios.post('http://16.16.167.16:8081/admin/home/register/driver/updateDriver/dropdown')
         .then((response) => {
             if (response.data.success) {
                 setDriverName(response.data.drivers);
@@ -53,7 +53,7 @@ function AttendanceRecords() {
             console.log("Error Add DropDown Details", err);
         });
 
-        axios.post('http://localhost:8081/records/attendanceRecords', {drivername: selectedDriver , checkInDateTime: startDate, checkOutDateTime: endDate})
+        axios.post('http://16.16.167.16:8081/records/attendanceRecords', {drivername: selectedDriver , checkInDateTime: startDate, checkOutDateTime: endDate})
         .then(res => {
             if (res.data.success) {
                 console.log("Sucessfully", res.data.attendance);

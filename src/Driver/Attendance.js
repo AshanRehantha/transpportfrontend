@@ -78,7 +78,7 @@ function Attendance() {
         checkOutLocation: attendancemode === 'Out' ? checkOutLocation : null,
       };
 
-        axios.post('http://localhost:8081/driver/dashboard/attendance', attendanceData)
+        axios.post('http://16.16.167.16:8081/driver/dashboard/attendance', attendanceData)
         .then(response => {
             console.log("Logged in Successfully", response.data);
             alert("Attendance recorded successfully!");
@@ -89,7 +89,7 @@ function Attendance() {
         });
     
         // // Fetch request to fetch data (optional, as you can choose either Axios or Fetch)
-        // fetch('http://localhost:8081/driver/dashboard/journey/dropdown', {
+        // fetch('http://16.16.167.16:8081/driver/dashboard/journey/dropdown', {
         //     method: 'POST',
         //     credentials: 'include',
         // })
@@ -109,7 +109,7 @@ function Attendance() {
         //     });
 
         // if (selectedOption === 'End') {
-        //     axios.get(`http://localhost:8081/driver/dashboard/latest-start-trip/${username}`)
+        //     axios.get(`http://16.16.167.16:8081/driver/dashboard/latest-start-trip/${username}`)
         //     .then(response => {
         //         const data = response.data.LatestStartDetails; 
         //         if (data) {

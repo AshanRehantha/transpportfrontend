@@ -40,7 +40,7 @@ function Register(){
             if(!validationErrors.email && !validationErrors.username && !validationErrors.password && !validationErrors.confirmpassword){
                 const adminData = { ...admins};
                 console.log("Values:", adminData);
-                axios.post('http://localhost:8081/admin/home/register', adminData)
+                axios.post('http://16.16.167.16:8081/admin/home/register', adminData)
                 .then(response => {
                     console.log("Admin Registered Successfully", response);
                 })
@@ -54,7 +54,7 @@ function Register(){
             if(!validationErrors.email && !validationErrors.username && !validationErrors.password && !validationErrors.confirmpassword){
                 const userData = { ...users};
                 console.log("Values:", userData);
-                axios.post('http://localhost:8081/admin/home/register', userData)
+                axios.post('http://16.16.167.16:8081/admin/home/register', userData)
                 .then(response => {
                     console.log("User Registered Successfully", response);
                 })
@@ -76,7 +76,7 @@ function Register(){
             driverData.append('password', drivers.password);
             driverData.append('confirmpassword', drivers.confirmpassword);
 
-            axios.post('http://localhost:8081/admin/home/register/driver', driverData, {
+            axios.post('http://16.16.167.16:8081/admin/home/register/driver', driverData, {
                 headers: {
                     'Content-Type': 'multipart/form-data' // Important for files
                 }
