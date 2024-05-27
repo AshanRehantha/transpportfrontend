@@ -1,363 +1,179 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import DatePicker from "react-datepicker";
+import 'react-datepicker/dist/react-datepicker.css';
+import { format } from 'date-fns';
 import SideBar from "./SideBar";
+import { useNavigate, useLocation } from "react-router-dom";
 
 
-function AddVehicleForm({ isOpen, onClose, addVehicle, vehicleId}) {
+function VehicleMaintenance() {
 
-    const [vehicleType, setVehicleType] = useState('');
-    const [vehicleNumber, setVehicleNumber] = useState('');
-    const [Ownership, setOwnership] = useState('');
-    const [RegistrationImage, setRegistrationImage] = useState([]);
-    const [fuelType, setFuelType] = useState('');
-    const [LeasedLiability, setLeasedLiability] = useState('');
-    const [licenseImage, setLicenseImage] = useState([]);
-    const [cylinderCapacity, setCylinderCapacity] = useState('');
-    const [insuranceCompany, setInsuranceCompany] = useState('');
-    const [insuranceCardImage, setInsuranceCardImage] = useState([]);
-    const [taxReceipts, setTaxReceipts] = useState([]);
-    const [selectedOption, setSelectedOption] = useState('Yes'); 
+    const Navigate = useNavigate();
+    const location = useLocation();
+    const { username } = location.state || { username: undefined };
+    const [selectedDate, setSelectedDate] = useState(null);
+    const formattedDate = selectedDate ? format(selectedDate, 'yyyy-MM-dd') : '';
+    const [selectedVehicle, setSelectedVehicle] = useState('');
+    const [otherVehicle, setOtherVehicle] = useState('');
+    const [vehicleMaintenance, setVehicleMaintenance] = useState('');
+    const [otherVehicleMaintenance, setOtherVehicleMaintenance] = useState('');
+    const [vehicleno, setVehicle] = useState([])
+    const [serviceMilage, setServiceMilage] = useState('');
+    const [reason, setReason] = useState('');
+    const [maintenanceBill, setMaintenanceBill] = useState([]);
 
-    const onSelect = ({target: {value} }) => {
-      setSelectedOption(value);
-  }
-
-  const isChecked = (value) => value === selectedOption;
-    
-    const handleImageChange = (e, imageType) => {
-      if (imageType === 'license') {
-        setLicenseImage(e.target.files);
-      } else if (imageType === 'registrationImage') {
-        setRegistrationImage(e.target.files);
-      }else if(imageType === 'insuranceCard'){
-        setInsuranceCardImage(e.target.files);
-      }else if(imageType === 'taxReceipts'){
-        setTaxReceipts(e.target.files);
-      }
+    const handleVehicleChange = (event) => {
+        const value = event.target.value;
+        setSelectedVehicle(value);
+        // Clear the text field value if a different option is selected
+        if (value !== 'other') {
+          setOtherVehicle('');
+        }
     };
-  
-    const handleUpload = (e) => {
-      e.preventDefault(); 
+
+    const handleVehicleMaintenance = (event) => {
+      const value = event.target.value;
+      setVehicleMaintenance(value);
+      // Clear the text field value if a different option is selected
+      if (value !== 'other') {
+        setOtherVehicleMaintenance('');
+      }else if(value !== 'Repair'){
+        setReason('');
+      }else{
+        setServiceMilage('');
+      }
+  };
+
+const handleImageChange = (e) => {
+  setMaintenanceBill(e.target.files); // This allows storing multiple files
+};
+
+    useEffect(() => {
+        // Axios request to fetch data
+        axios.post('http://16.16.167.16:8081/vehicles/vehicleDetails/dropdown')
+        .then((response) => {
+            if (response.data.success) {
+                setVehicle(response.data.vehicleno);
+            }
+        })
+        .catch(err => {
+            console.log("Error Add DropDown Details", err);
+        });
+    }, []);
+
+    const submitHandler = (e) => {
+      e.preventDefault();
       const formData = new FormData();
-      formData.append('vehicleno', vehicleNumber);
-      formData.append('vehicletype', vehicleType);
-      formData.append('ownership', Ownership);
-      formData.append('fuelType', fuelType);
-      formData.append('leasedliability', LeasedLiability);
-      formData.append('cylinderCapacity', cylinderCapacity);
-      formData.append('insuranceCompany', insuranceCompany);
-      formData.append('taxPayer', selectedOption === 'Yes' ? 1 : 0);
-      if (licenseImage) {
-        for (let i = 0; i < licenseImage.length; i++) {
-            formData.append('license', licenseImage[i]);
+      formData.append('vehicleno', selectedVehicle);
+      formData.append('date', formattedDate);
+      formData.append('maintenanceType', vehicleMaintenance);
+      formData.append('serviceMilage', serviceMilage);
+      formData.append('reason', reason);
+      formData.append('otherVehicleMaintenance', otherVehicleMaintenance);
+      if (maintenanceBill) {
+        for (let i = 0; i < maintenanceBill.length; i++) {
+            formData.append('maintenanceBill', maintenanceBill[i]);
         }
       }
-      if (RegistrationImage) {
-        for (let i = 0; i < RegistrationImage.length; i++) {
-            formData.append('registrationImage', RegistrationImage[i]);
-        }
-      }
-      if (insuranceCardImage) {
-        for (let i = 0; i < insuranceCardImage.length; i++) {
-            formData.append('insuranceCard', insuranceCardImage[i]);
-        }
-      }
-      if (taxReceipts) {
-        for (let i = 0; i < taxReceipts.length; i++) {
-            formData.append('taxReceipts', taxReceipts[i]);
-        }
-      }
-    
-      axios.post('http://16.16.167.16:8081/vehicles/vehicleDetails/add-vehicle', formData,{
+  
+      axios.post('http://16.16.167.16:8081/vehicles/historyDetails/vehicleMaintenance', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       })
-      .then((res) => {
-        if (res.data.success) {
-          console.log('Vehicle Details uploaded successfully');
-          alert('Successfully Added Vehicle Details');
-          addVehicle(res.data.vehicle);
-          onClose();
-          reset();
-        } else {
-          console.error('Failed to add the vehicle:', res.data.error);
-          alert(res.data.error);
-        }
-      })
-      .catch((error) => {
-        console.error('Failed to upload Vehicle Details', error);
-        alert('Failed to upload Vehicle Details. Please try again.'); 
-      });
-    };
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-    
-        const newVehicle = {
-          vehicleno: vehicleNumber,
-          vehicletype: vehicleType,
-          ownership: Ownership,
-          fuelType: fuelType,
-          leasedliability: LeasedLiability,
-          cylinderCapacity: cylinderCapacity,
-          insuranceCompany: insuranceCompany,
-          taxPayer: selectedOption,
-        };
-
-        addVehicle(newVehicle);
-
-        setVehicleNumber('');
-        setVehicleType('');
-        setOwnership('');
-        setFuelType('');
-        setLeasedLiability('');
-        setCylinderCapacity('');
-        setInsuranceCompany('');
-        setSelectedOption('');
-        onClose();
-    };
-
-    const reset =  () => {
-      setVehicleNumber('');
-      setVehicleType('');
-      setOwnership('');
-      setRegistrationImage([]);
-      setFuelType('');
-      setLeasedLiability('');
-      setCylinderCapacity('');
-      setInsuranceCompany('');
-      setLicenseImage([]);
-      setInsuranceCardImage([]);
-      setTaxReceipts([]);
-      setSelectedOption('Yes');
-    }
-  
-    return (
-        <form className="hidden-form" onSubmit={handleSubmit} encType="multipart/form-data">
-        <div className={`add-vehicle-form ${isOpen ? 'open' : 'closed'}`}>
-        <h2>Add Vehicle</h2>
-        <fieldset className="fieldSet">
-        <div className="label">
-          <label>Vehicle Number:
-            <input type="text" value={vehicleNumber} onChange={(e) => setVehicleNumber(e.target.value)} required="required"/>
-          </label>
-          </div>
-        <div className="label">
-          <label>Vehicle Type:
-            <input type="text" value={vehicleType} onChange={(e) => setVehicleType(e.target.value)} required="required"/>
-          </label>
-          </div>
-          <div className="label">
-          <label>Revenue License:
-            <input type="file" onChange={(e) => handleImageChange(e, 'license')} multiple />
-          </label>
-          </div>
-          <div className="label">
-          <label>Ownership of Vehicle:
-            <input
-              type="text"
-              value={Ownership}
-              onChange={(e) => setOwnership(e.target.value)}/>
-          </label>
-          </div>
-          <div className="label">
-          <label>Registration Certificate:
-            <input type="file" onChange={(e) => handleImageChange(e, 'registrationImage')} multiple />
-          </label>
-          </div>
-          <div className="fuel-dropdown">
-            <label>Fuel Type:
-              <select value={fuelType} onChange={(event) => setFuelType(event.target.value)}>
-                <option value="">Select Fuel Type</option>
-                <option value="Petrol">Petrol</option>
-                <option value="Diesel">Diesel</option>
-              </select>
-            </label>
-          </div>
-          <div className="label">
-          <label>Leased Company
-            (If no please mension 'No')
-            <input type="text" value={LeasedLiability} onChange={(e) => setLeasedLiability(e.target.value)}/>
-          </label>
-          </div>
-          <div className="label">
-          <label>Cylinder Capacity of Vehicle:
-            <input type="text" value={cylinderCapacity} onChange={(e) => setCylinderCapacity(e.target.value)}/>
-          </label>
-          </div>
-          <div className="label">
-          <label>Insurance Comapany:
-            <input type="text" value={insuranceCompany} onChange={(e) => setInsuranceCompany(e.target.value)}/>
-          </label>
-          </div>
-          <div className="label">
-          <label>Insurance card:
-            <input type="file" onChange={(e) => handleImageChange(e, 'insuranceCard')} multiple />
-          </label>
-          </div>
-          <div className="label">
-          <label htmlFor="taxPayer"><span className="chekmark">Tax Payer?</span>
-          <div className="form-radio">
-            <input id="taxPayerYes" name="selectedOption" value="Yes" type="radio" checked={isChecked("Yes")} onChange={onSelect} className="hidden-radio"/>
-            <label htmlFor="taxPayerYes" className="Yes">Yes: </label>
-
-            <input id="taxPayerNo" name="selectedOption" value="No" type="radio" checked={isChecked("No")} onChange={onSelect} className="hidden-radio"/>
-            <label htmlFor="taxPayerNo" className="No">No: </label>
-          </div>
-          </label>
-          </div>
-          {
-            selectedOption === 'Yes' && (
-          <div className="label">
-          <label>
-            Tax Receipts (if any):
-            <input type="file" onChange={(e) => handleImageChange(e, 'taxReceipts')} multiple  />
-          </label>
-          </div>
-           )}
-          </fieldset>
-          <button className="button-submit" type="submit" onClick={handleUpload}>Add Vehicle</button>
-
-          <button className="button-reset" onClick={reset}>RESET</button>
-        
-        <button className="button-close" onClick={onClose}>Close</button>
-        </div>
-        </form>
-    );
-}
-
-
-function VehicleDetails(){
-
-    const Navigate = useNavigate(); 
-    const [vehicles, setVehicles] = useState([]);
-    const [isAddFormOpen, setIsAddFormOpen] = useState(false);
-    const rowLimit = vehicles.id; 
-    
-    
-    useEffect(() => {
-      console.log(vehicles);
-        axios.post('http://16.16.167.16:8081/vehicles/vehicleDetails', {})
-        .then(res => {
-            if (res.data.success) {
-                console.log("Sucessfully", res.data.vehicles);
-                setVehicles(res.data.vehicles);
+          .then(response => {
+              if (response.data.loginStatus) {
+                  alert('Vehicle Maintenance Details Added Successfully');
+                  // Handle any further actions after successful upload
               } else {
-                console.error("Failed to fetch vehicle data:", res.data.error);
+                  alert('Failed to add the vehicle:', response.data.error);
               }
-        })
-        .catch(err => {
-            console.log(err);
-        });                
-    }, [vehicles]);
-
-     const openAddForm = (e) => {
+          })
+          .catch(err => {
+              console.error('Error Add Vehicle Maintenance Details:', err.message);
+          });
+    };
+  
+  
+      const reset =  (e) => {
         e.preventDefault();
-        setIsAddFormOpen(true);
-    };
-    
-    const closeAddForm = () => {
-        setIsAddFormOpen(false);
-    };
-
-    const addVehicle = (newVehicle) => {
-      setVehicles((prevVehicles) => [...prevVehicles, newVehicle]);
-    }
-
-    const handleSubmit = (e) => {
-      e.preventDefault();
-    };
-
-  const deletevehicle = (deleteVehicle) => {
-    console.log('Deleting vehicle:', deleteVehicle);
-      axios.post('http://16.16.167.16:8081/vehicles/vehicleDetails/delete-vehicle', deleteVehicle)
-      .then((response) => {
-        console.log('Server response:', response.data);
-        if (response.data.loginStatus) {
-          setVehicles((prevVehicles) =>
-            prevVehicles.filter((vehicle) => vehicle.id !== deleteVehicle.id)
-          );
-          Navigate('/vehicles/vehicleDetails/deletedVehicles', {  state: { deletedVehicleDetails: [deleteVehicle] } });
-        } else {
-          console.error('Failed to delete the vehicle. Server response:', response.data);
-        }
-      })
-      .catch((error) => {
-        console.error("Failed to Delete the vehicle:", error);
-      })
-  };
-
-  const handleDeleteClick = (id) => {
-    const deleteVehicle = { id };
-    console.log('Deleting vehicle:', deleteVehicle);
-    const isConfirmed = window.confirm('Are you sure you want to delete this vehicle?');
+        setSelectedDate(null);
+        setSelectedVehicle('')
+        setVehicleMaintenance('')
+        setServiceMilage('');
+        setReason('');
+        setOtherVehicleMaintenance('');
+        setMaintenanceBill([]);
+      }
   
-    if (isConfirmed) {
-      deletevehicle(deleteVehicle);
-    }
-  };
-
-  const handleDeletedVehiclesClick = () => {
-    console.log("Navigating to deleted vehicles");
-    Navigate('/vehicles/vehicleDetails/deletedVehicles');
-  };
-
-  
+      const today = new Date();
+      
     return(
-        <div>
-          <SideBar/>
-        <form className='vehicle-form' onSubmit={handleSubmit}>
-            <div className={`form-inner ${isAddFormOpen ? 'blur-background' : ''}`}>
-            <h2>Vehicle Details</h2>
-            <button className="add" onClick={openAddForm}>ADD +</button>
-            <button className='delete' onClick={handleDeletedVehiclesClick}>DELETED VEHICLES</button>
-            <div className="table-container">
-            <table className="table">
-                <thead>
-                    <tr>
-                        <th>No</th>
-                        <th>Vehicle Number</th>
-                        <th>Vehicle Type</th>
-                    </tr>
-                </thead>
-                <tbody>
-                {vehicles.slice(0, rowLimit).map((vehicle, index) => (
-                 <tr key={vehicle.id ? vehicle.id : index}>
-                    <td>{index + 1}</td>
-                    <td>{vehicle.vehicleno}</td>
-                    <td>{vehicle.vehicletype}</td>
-                    <td>
-                    <button className="button-edit" onClick={() => {Navigate('/vehicles/vehicleDetails/editVehicles', { state: { id: vehicle.id } })}}>EDIT</button>
-                    </td>
-                    <td>
-                    <button className="button-delete" onClick={() => handleDeleteClick(vehicle.id)}>DELETE</button>
-                    </td>
-                    <td>
-                    <button className="button-view"onClick={() => {Navigate('/vehicles/vehicleDetails/viewVehicles', { state: { id: vehicle.id } })}}>VIEW MORE</button>
-                    </td>
-                </tr>
-                ))}
-                </tbody>
-            </table>
+      <div>
+        <SideBar/>
+        <form className='security-form' onSubmit={submitHandler}>
+          <div className='security-vehicle-form'>
+            <h2>Vehicle Maintenance</h2>
+            <div className="journey-dropdown">
+                <label htmlFor="vehicleno" name="vehicleno" >Vehicle Number: </label>
+                  <select value={selectedVehicle} onChange={handleVehicleChange}>
+                    <option value="">Choose Your Vehicle</option>
+                    {vehicleno.length > 0 ? (
+                        vehicleno.map((number, index) => (
+                            <option key={index} value={number}>
+                                {number}
+                            </option>
+                        ))
+                    ) : (
+                    <option value="" disabled>
+                        No Vehicle Numbers Available
+                    </option>
+                    )}
+                    <option value="other">Other</option>
+                  </select>
+                  {selectedVehicle === 'other' && (
+                    <input type="text" value={otherVehicle} onChange={(event) => setOtherVehicle(event.target.value)} placeholder="Enter other vehicle number" />
+                  )}
             </div>
-
-            <button className="button-back" onClick={() => {Navigate('/admin/home')}}>BACK</button>  
-
-            <button className="button-logout" onClick={() => {Navigate('/admin')}}>LOGOUT</button>
+            <div className={`form-section ${!selectedVehicle ? 'blur' : ''}`}>
+            <div className="label">
+              <label>Repaire or Service Date:
+                <DatePicker selected={selectedDate}  onChange={date => setSelectedDate(date)} formatDate="MM/dd/yyyy"  showYearDropdown scrollableMonthYearDropdown className="date" maxDate={today}/>
+              </label>
+            </div>
+            <div className="journey-dropdown">
+              <label>Maintenance Type</label>
+              <select value={vehicleMaintenance} onChange={handleVehicleMaintenance}>
+                <option value="">Select Maintenance Type</option>
+                <option value="Service">Service</option>
+                <option value="Repair">Repair</option>
+                <option value="other">Other</option>
+              </select>
+              {vehicleMaintenance === 'Service' && (
+                <input type="text" value={serviceMilage} onChange={(event) => setServiceMilage(event.target.value)} placeholder="Enter Vehicle Milage for Service" />
+              )}
+              {vehicleMaintenance === 'Repair' && (
+                <input type="text" value={reason} onChange={(event) => setReason(event.target.value)} placeholder="Enter the reason for Repair" />
+              )}
+              {vehicleMaintenance === 'other' && (
+                <input type="text" value={otherVehicleMaintenance} onChange={(event) => setOtherVehicleMaintenance(event.target.value)} placeholder="Enter other Maintenace Type" />
+              )}
+            </div>
+            <div className="label">
+              <label htmlFor="image">Bills for Maintenance:
+              <input className="file" type="file" onChange={(e) => handleImageChange(e, 'maintenanceBill')} multiple />
+              </label>
+            </div>
             </div>
             
+            <button className="button-submit" type="submit">Add Vehicle Maintenance Details</button>
+            <button className="button-reset" onClick={reset}>RESET</button>
+            <button className="button-back" onClick={() => {Navigate('/admin/home', { state: { username } })}}>BACK</button>
+          </div>
         </form>
-            {isAddFormOpen && (
-            <AddVehicleForm isOpen={isAddFormOpen} onClose={closeAddForm} addVehicle={addVehicle} />
-            )}
-
-            {/* {isEditFormOpen && (
-            <EditVehicleForm isOpen={isEditFormOpen} onClose={closeEditForm} editVehicle={editVehicle} vehicleId={editVehicleId} />
-            )} */}
-        </div>
-
+      </div>
     )
+
 }
-export default VehicleDetails;
+export default VehicleMaintenance;
